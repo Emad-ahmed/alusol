@@ -1,21 +1,6 @@
 
 <?php include 'navbar.php'; ?>
 
-<?php
-// Check if a session is already active
-if (session_status() === PHP_SESSION_NONE) {
-    // Set session timeout to a longer period (e.g., 1 week) before starting the session
-    $lifetime = 60 * 60 * 24 * 7; // 1 week
-    session_set_cookie_params($lifetime);
-    session_start();
-}
-
-// Check if the user is logged in, if not redirect to login page
-if (!isset($_SESSION['userid'])) {
-    header("Location: login.php");
-    exit();
-}
-?>
 
 <?php
 $host = "localhost";
