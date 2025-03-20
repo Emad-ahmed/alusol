@@ -1,0 +1,15 @@
+body {
+    background-color: #f4f7fa;
+    font-family: 'Arial', sans-serif;
+    color: #343a40;
+}
+
+.navbar {
+    background-color: #343a40; /* Darker navbar */
+}
+.navbar-brand, .nav-link {
+    color: #ffffff !important; /* White text color */
+}
+.nav-link:hover {
+    color: #ffc107 !important; /* Yellow on hover */
+}

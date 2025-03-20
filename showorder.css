@@ -1,0 +1,222 @@
+body {
+    background-color: #f4f7fa;
+    font-family: 'Arial', sans-serif;
+    color: #343a40;
+}
+
+.navbar {
+    background-color: #343a40; /* Darker navbar */
+}
+.navbar-brand, .nav-link {
+    color: #ffffff !important; /* White text color */
+}
+.nav-link:hover {
+    color: #ffc107 !important; /* Yellow on hover */
+}
+.container {
+    margin-top: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #007bff;
+}
+
+/* Make tables scrollable on mobile */
+.table-responsive {
+    margin-top: 20px;
+    border-radius: 5px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.table th {
+    background-color: #007bff;
+    color: #ffffff;
+    text-align: center;
+}
+
+.table td {
+    text-align: center;
+}
+
+.table .btn {
+    margin: 5px;
+}
+
+.modal-content {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.modal-header {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+.form-control {
+    border-radius: 5px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* Increase modal size */
+.modal-dialog.modal-lg {
+    max-width: 95%; /* Increase modal width to 95% of the viewport */
+    width: 95%;
+}
+
+.modal-content {
+    padding: 20px;
+    border-radius: 8px;
+}
+
+/* Increase table size inside the modal */
+.modal-body table {
+    width: 100%; /* Ensure the table takes full width of the modal */
+    font-size: 16px; /* Larger font size for table content */
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.modal-body table th,
+.modal-body table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+}
+
+/* Specific changes for table td inside the modal */
+.modal-body table td {
+    font-size: 14px; /* Adjust font size for td */
+    padding: 10px; /* Modify padding for td */
+}
+
+/* Make input fields larger inside the modal */
+.modal-body input[name="name[]"],
+.modal-body input[name="description[]"],
+.modal-body input[name="uom[]"],
+.modal-body input[name="qty[]"],
+.modal-body input[name="price[]"],
+.modal-body select[name="comment[]"] {
+    width: 100%; /* Full width input fields */
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: 16px; /* Larger font size for input */
+}
+
+/* Ensure the form controls don't overlap */
+.modal-body .form-control {
+    margin-bottom: 15px;
+}
+
+/* Button styling */
+.modal-body .btn {
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* Responsive handling for modal on smaller screens */
+@media (max-width: 768px) {
+    .modal-dialog.modal-lg {
+        max-width: 95%; /* Slightly reduce size for smaller screens */
+        width: 95%;
+    }
+
+    .modal-body table th,
+    .modal-body table td {
+        font-size: 14px; /* Adjust table font size for smaller screens */
+        padding: 8px;
+    }
+
+    .modal-body input {
+        font-size: 14px; /* Adjust input field font size for smaller screens */
+    }
+}
+
+/* Responsive styles for mobile */
+@media (max-width: 768px) {
+    .navbar {
+        text-align: center;
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    .table-responsive {
+        font-size: 0.9rem; /* Smaller font size for mobile */
+    }
+
+    .modal-dialog {
+        max-width: 90%; /* Make modal smaller on mobile */
+    }
+
+    h2 {
+        font-size: 1.5rem; /* Smaller title size */
+    }
+
+    .btn {
+        width: 100%; /* Full-width buttons on mobile */
+        margin-bottom: 10px;
+    }
+}
+
+/* Even smaller screens */
+@media (max-width: 576px) {
+    .container {
+        padding: 5px;
+    }
+
+    h2 {
+        font-size: 1.25rem; /* Smaller title size for small screens */
+    }
+
+    .form-control {
+        font-size: 0.85rem; /* Smaller input fields */
+    }
+
+    .btn {
+        font-size: 0.9rem;
+    }
+
+    .modal-dialog {
+        max-width: 95%;
+    }
+}
