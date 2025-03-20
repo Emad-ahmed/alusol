@@ -30,59 +30,61 @@ if (isset($_GET['po_number'])) {
 
             function Header() {
                 if (!$this->headerPrinted) {
-                    $this->Image('gulf.png', 57, 10, 90);
+                    $this->Image('gulf.png', 57, 10, 90); // Add logo
                     $this->Ln(20);
                     
-                    // Set font for the "PURCHASE ORDER" text only
+                    // Set font for the "PURCHASE ORDER" text
                     $this->SetFont('Arial', 'B', 16);
                     $this->Cell(0, 10, 'PURCHASE ORDER', 0, 1, 'C');
                     
                     // Set default font for the rest of the header
-                    $this->SetFont('Arial', '', 9); // Adjust size for other texts if needed
+                    $this->SetFont('Arial', '', 9);
             
                     $this->Ln(2);
-                    $this->Line(10, $this->GetY(), 200, $this->GetY());
+                    $this->Line(10, $this->GetY(), 200, $this->GetY()); // Add a line
                     $this->Ln(5);
                     $this->headerPrinted = true; // Ensure header only prints once
                 }
             }
-            
 
             function Footer() {
-                $this->SetY(-50);
+                $this->SetY(-70); // Position footer 50mm from the bottom
                 $this->SetFont('Arial', '', 8);
-                $footerText = "Your time to review our request is greatly appreciated. We look forward to hearing from you soon\n\n";
+                $footerText = "Note:\n\n";
+                $footerText .= "Please mention the PO number in your invoice.\n";
+                $footerText .= "If you find any discrepancies, kindly let us know immediately\n\n";
+                $footerText .= "Your time to review our request is greatly appreciated. We look forward to hearing from you soon\n\n";
                 $footerText .= "- Thanks for the ongoing support!\n";
                 $footerText .= "PROCUREMENT\n";
                 $footerText .= "+965 99223382, +965 90012272\n";
                 $footerText .= "procurement@gulfhousefactory.com\n";
                 $footerText .= "GULF HOUSE FACTORY\n\n";
                 
-                // MultiCell to print the footer text
+                // Print footer text
                 $this->MultiCell(0, 4, $footerText, 0, 'L');
             
-                // Add centered Shop address at the bottom
+                // Add centered shop address at the bottom
                 $this->SetFont('Arial', '', 9);
-                $this->SetXY(10, $this->GetY());
+                $this->SetY(-15); // Position the shop address 15mm from the bottom
                 $this->Cell(0, 4, "Shop No. 01, Building No. 287, Mohammad Ibrahim Street, Block No. 03, Al Rai, Kuwait", 0, 1, 'C');
             }
-            
 
             function TableHeader() {
-                $this->SetFont('Arial', 'B', 7);
-                $this->Cell(16, 10, 'ITEM', 1, 0, 'C');
-                $this->Cell(25, 10, 'PRODUCT NAME', 1, 0, 'C');
-                $this->Cell(17, 10, 'LENGTH/UNIT', 1, 0, 'C');
-                $this->Cell(18, 10, 'OPEN (PIECE)', 1, 0, 'C');
-                $this->Cell(18, 10, 'CLOSE (PIECE)', 1, 0, 'C');
-                $this->Cell(18, 10, 'TOTAL (PIECE)', 1, 0, 'C');
-                $this->Cell(18, 10, 'OPEN METER', 1, 0, 'C');
-                $this->Cell(18, 10, 'CLOSE METER', 1, 0, 'C');
-                $this->Cell(17, 10, 'TOTAL PACKET', 1, 0, 'C');
-                $this->Cell(24, 10, 'COMMENT', 1, 1, 'C');
+                $this->SetFont('Arial', 'B', 6.5);
+                $this->Cell(14, 10, 'ITEM', 1, 0, 'C');
+                $this->Cell(33, 10, 'PRODUCT NAME', 1, 0, 'C');
+                $this->Cell(14, 10, 'PCS/MTR', 1, 0, 'C');
+                $this->Cell(18, 10, 'OPEN (PCS)', 1, 0, 'C');
+                $this->Cell(18, 10, 'CLOSE (PCS)', 1, 0, 'C');
+                $this->Cell(18, 10, 'TOTAL (PCS)', 1, 0, 'C');
+                $this->Cell(15, 10, 'OPEN MTR', 1, 0, 'C');
+                $this->Cell(16, 10, 'CLOSE MTR', 1, 0, 'C');
+                $this->Cell(15, 10, 'BUNDLE', 1, 0, 'C');
+                $this->Cell(20, 10, 'COMMENT', 1, 1, 'C');
             }
         }
 
+        // Create PDF instance
         $pdf = new PDF();
         $pdf->AddPage();
 
@@ -144,36 +146,34 @@ if (isset($_GET['po_number'])) {
 
         // Print Table Data
         $pdf->SetFont('Arial', '', 7);
-    $result->data_seek(0);
-    while ($row = $result->fetch_assoc()) {
-        if ($pdf->GetY() > 220) { // Check if page break is needed
-            $pdf->AddPage();
-            // Set the header font to bold for the next page
-            $pdf->SetFont('Arial', 'B', 7);
-            $pdf->TableHeader(); // Print the table header in bold
-            // Reset font to normal for table content
-            $pdf->SetFont('Arial', '', 7);
+        $result->data_seek(0);
+        while ($row = $result->fetch_assoc()) {
+            if ($pdf->GetY() > 210) { // Check if page break is needed
+                $pdf->AddPage();
+                $pdf->SetFont('Arial', 'B', 7);
+                $pdf->TableHeader(); // Print the table header in bold
+                $pdf->SetFont('Arial', '', 7); // Reset font for table content
+            }
+
+            // Print table row
+            $pdf->Cell(14, 10, $row['item_name'], 1);
+            $pdf->Cell(33, 10, $row['product_name'], 1);
+            $pdf->Cell(14, 10, $row['length'], 1);
+            $pdf->Cell(18, 10, $row['open_piece'], 1);
+            $pdf->Cell(18, 10, $row['close_piece'], 1);
+            $pdf->Cell(18, 10, $row['total_piece'], 1);
+            $pdf->Cell(15, 10, $row['open_meter'], 1);
+            $pdf->Cell(16, 10, $row['close_meter'], 1);
+            $pdf->Cell(15, 10, $row['bundle'], 1);
+            $pdf->MultiCell(20, 10, $row['comment'], 1); // Use MultiCell for comments
         }
 
-        // Use MultiCell for wrapping long content in the cell
-        $pdf->Cell(16, 10, $row['item_name'], 1);
-        $pdf->Cell(25, 10, $row['product_name'], 1);
-        $pdf->Cell(17, 10, $row['length'], 1);
-        $pdf->Cell(18, 10, $row['open_piece'], 1);
-        $pdf->Cell(18, 10, $row['close_piece'], 1);
-        $pdf->Cell(18, 10, $row['total_piece'], 1);
-        $pdf->Cell(18, 10, $row['open_meter'], 1);
-        $pdf->Cell(18, 10, $row['close_meter'], 1);
-        $pdf->Cell(17, 10, $row['bundle'], 1);
-        
-        // Use MultiCell for the comment column to allow text wrapping if needed
-        $pdf->MultiCell(24, 10, $row['comment'], 1);
-    }
-
-
-        $pdf->Output();
+        // Output the PDF and force download
+        $pdf->Output('D', 'PO-' . $po_number . '.pdf');
     } else {
         echo "No records found.";
     }
+} else {
+    echo "PO number not provided.";
 }
 ?>
