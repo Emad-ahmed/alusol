@@ -267,93 +267,101 @@ $(document).ready(function() {
 
 
 <script>
-        $(document).ready(function() {
-            // Event listener for form submission
-            $("#priceForm").on("submit", function(event) {
-                event.preventDefault(); // Prevent the form from submitting
+    $(document).ready(function() {
+        // Event listener for form submission
+        $("#priceForm").on("submit", function(event) {
+            event.preventDefault(); // Prevent the form from submitting
 
-                // Get form values
-                let item = $("#item").val();
-                let product = $("#searchInput").val();
-                let lengthPerUnit = $("#mtr").val();
-                let openPieces = $("#open_y").val();
-                let closePieces = $("#close_n").val();
-                let totalPieces = $("#quantity").val();
-                let openMeter = $("#mtr_y").val();
-                let closeMeter = $("#mtr_n").val();
-                let totalMeter = $("#total_meter").val();
-                let bundle = $("#bundle").val();
-                let price = $("#price").val();
-                let amount = $("#amount").val();
-                let comment = $("#comment").val();
+            // Get form values
+            let item = $("#item").val();
+            let product = $("#searchInput").val();
+            let lengthPerUnit = parseFloat($("#mtr").val()) || 0; // Ensure it's a number or default to 0
+            let openPieces = parseFloat($("#open_y").val()) || 0;
+            let closePieces = parseFloat($("#close_n").val()) || 0;
+            let totalPieces = parseFloat($("#quantity").val()) || 0;
+            let openMeter = parseFloat($("#mtr_y").val()) || 0;
+            let closeMeter = parseFloat($("#mtr_n").val()) || 0;
+            let totalMeter = parseFloat($("#total_meter").val()) || 0;
+            let bundle = $("#bundle").val();
+            let price = parseFloat($("#price").val()) || 0; // Ensure it's a number or default to 0
+            let amount = 0; // Initialize amount
+            let comment = $("#comment").val();
 
-                // Add a new row to the table
-                let newRow = `<tr>
-                    <td>${item}</td>
-                    <td>${product}</td>
-                    <td>${lengthPerUnit}</td>
-                    <td>${openPieces}</td>
-                    <td>${closePieces}</td>
-                    <td>${totalPieces}</td>
-                    <td>${openMeter}</td>
-                    <td>${closeMeter}</td>
-                    <td>${totalMeter}</td>
-                    <td>${bundle}</td>
-                    <td>${price}</td>
-                    <td>${amount}</td>
-                    <td>${comment}</td>
-                    <td><button class="btn btn-warning btn-sm edit-btn">Edit</button></td>
-                </tr>`;
+           
 
-                $("#dataTable tbody").append(newRow);
+            // Add a new row to the table
+            let newRow = `<tr>
+                <td>${item}</td>
+                <td>${product}</td>
+                <td>${lengthPerUnit}</td>
+                <td>${openPieces}</td>
+                <td>${closePieces}</td>
+                <td>${totalPieces}</td>
+                <td>${openMeter}</td>
+                <td>${closeMeter}</td>
+                <td>${totalMeter}</td>
+                <td>${bundle}</td>
+                <td>${price}</td>
+                <td>${amount}</td>
+                <td>${comment}</td>
+                <td><button class="btn btn-warning btn-sm edit-btn">Edit</button> <button class="btn btn-danger btn-sm delete-btn">Delete</button></td>
+            </tr>`;
 
-                // Clear the form fields
-                $("#priceForm")[0].reset();
+            $("#dataTable tbody").append(newRow);
 
-                // Update the total amount
-                updateTotalAmount();
-            });
+            // Clear the form fields
+            $("#priceForm")[0].reset();
 
-            // Event delegation for edit button
-            $(document).on("click", ".edit-btn", function() {
-                let row = $(this).closest("tr");
-                let cells = row.find("td");
-
-                // Populate the form with the row data
-                $("#item").val(cells.eq(0).text());
-                $("#searchInput").val(cells.eq(1).text());
-                $("#mtr").val(cells.eq(2).text());
-                $("#open_y").val(cells.eq(3).text());
-                $("#close_n").val(cells.eq(4).text());
-                $("#quantity").val(cells.eq(5).text());
-                $("#mtr_y").val(cells.eq(6).text());
-                $("#mtr_n").val(cells.eq(7).text());
-                $("#total_meter").val(cells.eq(8).text());
-                $("#bundle").val(cells.eq(9).text());
-                $("#price").val(cells.eq(10).text());
-                $("#amount").val(cells.eq(11).text());
-                $("#comment").val(cells.eq(12).text());
-
-                // Remove the row from the table
-                row.remove();
-
-                // Update the total amount
-                updateTotalAmount();
-            });
-
-            // Function to update the total amount
-            function updateTotalAmount() {
-                let total = 0;
-                $("#dataTable tbody tr").each(function() {
-                    let amount = parseFloat($(this).find("td").eq(11).text());
-                    if (!isNaN(amount)) {
-                        total += amount;
-                    }
-                });
-                $("#totalRow").text(total.toFixed(3));
-            }
+            // Update the total amount
+            updateTotalAmount();
         });
-    </script>
+
+        // Event delegation for edit button
+        $(document).on("click", ".edit-btn", function() {
+            let row = $(this).closest("tr");
+            let cells = row.find("td");
+
+            // Populate the form with the row data
+            $("#item").val(cells.eq(0).text());
+            $("#searchInput").val(cells.eq(1).text());
+            $("#mtr").val(cells.eq(2).text());
+            $("#open_y").val(cells.eq(3).text());
+            $("#close_n").val(cells.eq(4).text());
+            $("#quantity").val(cells.eq(5).text());
+            $("#mtr_y").val(cells.eq(6).text());
+            $("#mtr_n").val(cells.eq(7).text());
+            $("#total_meter").val(cells.eq(8).text());
+            $("#bundle").val(cells.eq(9).text());
+            $("#price").val(cells.eq(10).text());
+            $("#amount").val(cells.eq(11).text());
+            $("#comment").val(cells.eq(12).text());
+
+            // Remove the row from the table
+            row.remove();
+
+            // Update the total amount
+            updateTotalAmount();
+        });
+
+        $(document).on("click", ".delete-btn", function() {
+            let row = $(this).closest("tr");
+            row.remove(); // Remove the row
+            updateTotalAmount(); // Update the total amount
+        });
+
+        // Function to update the total amount
+        function updateTotalAmount() {
+            let total = 0;
+            $("#dataTable tbody tr").each(function() {
+                let amount = parseFloat($(this).find("td").eq(11).text());
+                if (!isNaN(amount)) {
+                    total += amount;
+                }
+            });
+            $("#totalRow").text(total.toFixed(3));
+        }
+    });
+</script>
 
 
 <script>

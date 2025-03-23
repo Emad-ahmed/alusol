@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const priceInput = document.getElementById('price');
     const amountInput = document.getElementById('amount');
 
+    console.log(quantityInput.value);
+
     // Function to calculate and set the values
     function calculateMeters() {
         // Check if the selected ITEM is "SLAT"
@@ -52,7 +54,9 @@ document.addEventListener('DOMContentLoaded', function() {
             quantityInput.value = '';
             totalMeterInput.value = '';
             bundleInput.value = ''; // Clear bundle field as well
-            amountInput.value = ''; // Clear amount field as well
+
+            // Call the calculateAmount function to update the amount field
+            calculateAmount();
         }
     }
 
@@ -76,15 +80,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to calculate and set the amount value
     function calculateAmount() {
-        // Get the total_meter and price values and convert them to numbers
-        const totalMeterValue = parseFloat(totalMeterInput.value) || 0;
-        const priceValue = parseFloat(priceInput.value) || 0;
+        // Get the total_meter, quantity, and price values
+        const totalMeter = parseFloat(totalMeterInput.value) || 0;
+        const quantity = parseFloat(quantityInput.value) || 0;
+        const price = parseFloat(priceInput.value) || 0;
 
-        // Calculate amount (total_meter * price)
-        const amountValue = totalMeterValue * priceValue;
+        let amount = 0;
 
-        // Set the calculated value to the amount field
-        amountInput.value = amountValue.toFixed(2); // Round to 2 decimal places
+        // Calculate amount based on ITEM
+        if (itemSelect.value === 'SLAT') {
+            // If ITEM is "SLAT", calculate amount as total_meter * price
+            amount = totalMeter * price;
+        } else {
+            // If ITEM is not "SLAT", calculate amount as quantity * price
+            amount = quantity * price;
+        }
+
+        // Set the calculated amount to the amount field
+        amountInput.value = amount.toFixed(2); // Round to 2 decimal places
     }
 
     // Add event listeners to the relevant input fields and select elements
@@ -95,5 +108,4 @@ document.addEventListener('DOMContentLoaded', function() {
     searchInput.addEventListener('input', calculateBundle); // Check PRODUCT input
     totalMeterInput.addEventListener('input', calculateBundle); // Check total_meter input
     priceInput.addEventListener('input', calculateAmount); // Check price input
-    totalMeterInput.addEventListener('input', calculateAmount); // Check total_meter input
 });

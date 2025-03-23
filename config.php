@@ -1,14 +1,14 @@
 <?php
-// Database configuration
-
-$host = "localhost";
-$user = "root";
+$servername = "localhost";
+$username = "root";
 $password = "";
-$dbname = "newalusol"; // আপনার ডাটাবেজের নাম
+$dbname = "newalusol";
 
-$conn = new mysqli($host, $user, $password, $dbname);
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-
 ?>
